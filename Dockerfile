@@ -1,5 +1,4 @@
 FROM golang:latest
-RUN apk add git 
 
 COPY . /home/src
 WORKDIR /home/src
