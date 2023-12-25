@@ -1,0 +1,60 @@
+name: gocurl
+description: "cURL action to perform REST API based on Go and net/http"
+inputs:
+  url: 
+    description: 'The target url'
+  method:
+    description: 'The request method, basically one of GET, POST, PUT, PATCH'
+    default: "GET"
+  accept:
+    description: 'List of status codes to be accepted, else it is considerred to be failed'
+    default: "200,201,204"
+  headers:
+    description: 'Headers object'
+  params:
+    description: 'Params object'
+  body:
+    description: 'Body object with string literal'
+  timeout:
+    description: 'Timeout (ms)'
+    default: 1000
+  basic-auth-token:
+    description: 'Basic authentication token, format => username:password as base64'
+  bearer-token: 
+    description: 'Bearer Token'
+  proxy-url:
+    description: 'Proxy host, format => host:port'
+  proxy-auth-token: 
+    description: 'Proxy authentication username'
+  proxy-auth-password: 
+    description: 'Proxy authentication password'
+  log-response: 
+    description: 'Should log the response'
+    default: 'false'
+  retries:
+    description: 'Number of retries'
+    default: 1
+outputs:
+  response:
+    description: 'The response object'
+branding:
+  icon: 'download'  
+  color: 'gray-dark'
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+  - "-url=${{ inputs.url }}"
+  - "-method=${{ inputs.method }}"
+  - "-accept=${{ inputs.accept }}"
+  - "-headers=${{ inputs.headers }}"
+  - "-params=${{ inputs.params }}"
+  - "-body=${{ inputs.body }}"
+  - "-timeout=${{ inputs.timeout }}"
+  - "-basic-auth-token=${{ inputs.basic-auth-token }}"
+  - "-bearer-token=${{ inputs.bearer-token }}"
+  - "-proxy-url=${{ inputs.proxy-url }}"
+  - "-proxy-auth-username=${{ inputs.proxy-auth-username }}"
+  - "-proxy-auth-password=${{ inputs.proxy-auth-password }}"
+  - "-log-response=${{ inputs.log-response }}"
+  - "-retries=${{ inputs.retries }}"
