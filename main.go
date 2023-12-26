@@ -5,15 +5,17 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/prasiman/gocurl/util/httpclient"
 )
 
-var baseUrl = flag.String("url", "", "Request URL")
+var url = flag.String("url", "", "Request URL")
 var method = flag.String("method", "GET", "Request method")
 var accept = flag.String("accept", "200,201,204", "List of accepted response code, separated by comma")
 var headers = flag.String("headers", `{}`, "Request headers")
@@ -23,7 +25,7 @@ var basicAuthToken = flag.String("basic-auth-token", "", "Basic Auth token")
 var bearerToken = flag.String("bearer-token", "", "Bearer token")
 var logResponse = flag.Bool("log-response", false, "Log response to outputs")
 var retries = flag.Int("retries", 1, "Number of retries")
-var timeout = flag.String("timeout", "1000", "Request timeout in ms")
+var timeout = flag.Int("timeout", 1000, "Request timeout in ms")
 var proxyUrl = flag.String("proxy-url", "", "Proxy URL")
 var proxyAuthUsername = flag.String("proxy-auth-username", "", "Proxy auth username")
 var proxyAuthPassword = flag.String("proxy-auth-password", "", "Proxy auth username")
@@ -31,8 +33,8 @@ var proxyAuthPassword = flag.String("proxy-auth-password", "", "Proxy auth usern
 func main() {
 	flag.Parse()
 
-	time, _ := time.ParseDuration(*timeout + "ms")
-	client := httpclient.NewRetryableClient(time, strings.Split(*accept, ","), retries, proxyUrl, proxyAuthUsername, proxyAuthPassword)
+	time, _ := time.ParseDuration(strconv.Itoa(*timeout) + "ms")
+	client := httpclient.NewRetryableClient(time, retries, proxyUrl, proxyAuthUsername, proxyAuthPassword)
 
 	var requestHeaders map[string]any
 	var requestParams map[string]any
@@ -43,10 +45,9 @@ func main() {
 	requestBody = strings.NewReader(*body)
 
 	// Set request
-	request, err := http.NewRequest(*method, *baseUrl, requestBody)
+	request, err := http.NewRequest(*method, *url, requestBody)
 	if err != nil {
-		fmt.Println("Error: " + err.Error())
-		return
+		log.Fatalln("Error: " + err.Error())
 	}
 
 	request.Header.Set("Content-Type", "application/json")
@@ -72,17 +73,24 @@ func main() {
 	}
 
 	// Get response
-	response, err := client.Do(request)
-	if err != nil {
-		fmt.Println("Error: " + err.Error())
-		return
+	response, _ := client.Do(request)
+
+	acceptedCode := strings.Split(*accept, ",")
+	accepted := false
+
+	for _, value := range acceptedCode {
+		statusCodeInt, _ := strconv.Atoi(value)
+
+		if response.StatusCode == statusCodeInt {
+			accepted = true
+		}
 	}
 
-	body, err := io.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println("Error: " + err.Error())
-		return
+	if !accepted {
+		log.Fatalln("Error: Request failed with status code " + strconv.Itoa(response.StatusCode))
 	}
+
+	body, _ := io.ReadAll(response.Body)
 
 	var respBody map[string]any
 
@@ -98,7 +106,22 @@ func main() {
 	responseOutput, _ := json.Marshal(responseArray)
 
 	// Set response to output
-	os.Setenv("GITHUB_OUTPUT", `response=`+string(responseOutput))
+	msg := []byte("response=" + string(responseOutput) + "\r\n")
+	f, err := os.OpenFile("GITHUB_OUTPUT", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		log.Fatalf("Unable to write command to the environment file: %s", err)
+	}
+
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Fatalf("Error occurred. Reason: " + err.Error())
+		}
+	}()
+
+	if _, err := f.Write(msg); err != nil {
+		log.Fatalf("Unable to write command to the environment file: %s", err)
+	}
 
 	if *logResponse {
 		fmt.Println("Response: " + string(responseOutput))

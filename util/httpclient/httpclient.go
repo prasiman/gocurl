@@ -6,18 +6,16 @@ import (
 	"math"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 )
 
-var AcceptedCode = []string{"200", "201", "204"}
 var RetryCount = 1
 
 type retryableTransport struct {
 	transport http.RoundTripper
 }
 
-func NewRetryableClient(timeout time.Duration, accept []string, retry *int, proxyUrl *string, proxyUsername *string, proxyPassword *string) *http.Client {
+func NewRetryableClient(timeout time.Duration, retry *int, proxyUrl *string, proxyUsername *string, proxyPassword *string) *http.Client {
 	var transport = &retryableTransport{
 		transport: &http.Transport{},
 	}
@@ -35,7 +33,6 @@ func NewRetryableClient(timeout time.Duration, accept []string, retry *int, prox
 	}
 
 	RetryCount = *retry
-	AcceptedCode = accept
 
 	return &http.Client{
 		Transport: transport,
@@ -76,19 +73,7 @@ func backoff(retries int) time.Duration {
 }
 
 func shouldRetry(err error, resp *http.Response) bool {
-	if err != nil {
-		return true
-	}
-
-	for _, value := range AcceptedCode {
-		statusCodeInt, _ := strconv.Atoi(value)
-
-		if resp.StatusCode == statusCodeInt {
-			return false
-		}
-	}
-
-	return true
+	return err != nil
 }
 
 func drainBody(resp *http.Response) {

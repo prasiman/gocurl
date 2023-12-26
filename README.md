@@ -31,14 +31,14 @@ jobs:
           accept: 200,201,204
 
           # Headers can be passed through with an escaped json object string
-          headers: '{ \"custom-header\": \"value\" }'
+          headers: '{ "custom-header": "value" }'
 
           # Params can be passed through with an escaped json object string
-          params: '{ \"param1\": \"value\", \"param2\": \"value2\" }'
+          params: '{ "param1": "value", "param2": "value2" }'
 
           # Body request passed through with an escaped json object string
           # Apply only to POST|PUT request
-          body: '{ \"name\": \"breeze\",  \"job\": \"devops\" }'
+          body: '{ "name": "breeze",  "job": "devops" }'
 
           # Send raw body instead of JSON-parsed or YAML-parsed body
           # Default: false
@@ -113,7 +113,7 @@ jobs:
           url: https://reqres.in/api/users
           method: "POST"
           accept: 201
-          body: '{ \"name\": \"breeze\", \"job\": \"devops\" }'
+          body: '{ "name": "breeze", "job": "devops" }'
           log-response: true
       - name: "Call API 2"
         uses: prasiman/gocurl@v1
@@ -123,7 +123,7 @@ jobs:
           method: "POST"
           accept: 200
           # You can send raw body instead of JSON-parsed or YAML-parsed body
-          body: '\"string\"'
+          body: '"string"'
           log-response: true
       - name: "Use response"
         run: echo ${{ steps.api.outputs.response }}

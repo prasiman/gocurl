@@ -2,7 +2,7 @@ name: gocurl
 description: "cURL action to perform REST API based on Go and net/http"
 inputs:
   url: 
-    description: 'The target url'
+    description: 'The target URL'
   method:
     description: 'The request method, basically one of GET, POST, PUT, PATCH'
     default: "GET"
@@ -38,7 +38,7 @@ outputs:
   response:
     description: 'The response object'
 branding:
-  icon: 'download'  
+  icon: 'command'  
   color: 'gray-dark'
 runs:
   using: docker
