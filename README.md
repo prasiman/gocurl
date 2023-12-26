@@ -31,13 +31,16 @@ jobs:
           accept: 200,201,204
 
           # Headers can be passed through with an escaped json object string
+          # Default: "{}"
           headers: '{ "custom-header": "value" }'
 
           # Params can be passed through with an escaped json object string
+          # Default: "{}"
           params: '{ "param1": "value", "param2": "value2" }'
 
           # Body request passed through with an escaped json object string
           # Apply only to POST|PUT request
+          # Default: "{}"
           body: '{ "name": "breeze",  "job": "devops" }'
 
           # Send raw body instead of JSON-parsed or YAML-parsed body
@@ -51,20 +54,25 @@ jobs:
           # Basic authentication using username and password
           # This will override the Authorization header, for example Authorization: Basic QWxhZGRpbjpPcGVuU2VzYW1l
           # Format => username:password as base 64
+          # Default: ""
           basic-auth-token: ${{ secrets.curl_auth_token }}
 
           # The authentication using token
           # This will override the Authorization header, for example Authorization: Bearer QWxhZGRpbjpPcGVuU2VzYW1l
+          # Default: ""
           bearer-token: ${{ secrets.bearer_token }}
 
           # If you want to use proxy with the request, you can use proxy-url
           # Format => host:port
+          # Default: ""
           proxy-url: https://proxy-url:3000
 
           # Proxy authentication username
+          # Default: ""
           proxy-auth-username: ${{ secrets.proxy_auth_username }}
 
           # Proxy authentication password
+          # Default: ""
           proxy-auth-password: ${{ secrets.proxy_auth_password }}
 
           # If it is set to true, it will show the response log in the GitHub UI

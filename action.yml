@@ -11,23 +11,31 @@ inputs:
     default: "200,201,204"
   headers:
     description: 'Headers object'
+    default: "{}"
   params:
     description: 'Params object'
+    default: "{}"
   body:
     description: 'Body object with string literal'
+    default: "{}"
   timeout:
     description: 'Timeout (ms)'
     default: 1000
   basic-auth-token:
     description: 'Basic authentication token, format => username:password as base64'
+    default: ""
   bearer-token: 
     description: 'Bearer Token'
+    default: ""
   proxy-url:
     description: 'Proxy host, format => host:port'
+    default: ""
   proxy-auth-token: 
     description: 'Proxy authentication username'
+    default: ""
   proxy-auth-password: 
     description: 'Proxy authentication password'
+    default: ""
   log-response: 
     description: 'Should log the response'
     default: 'false'
