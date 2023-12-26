@@ -30,22 +30,18 @@ jobs:
           # Default is 200,201,204
           accept: 200,201,204
 
-          # Headers can be passed through with an escaped json object string
+          # Headers can be passed through with a json object string
           # Default: "{}"
           headers: '{ "custom-header": "value" }'
 
-          # Params can be passed through with an escaped json object string
+          # Params can be passed through with a json object string
           # Default: "{}"
           params: '{ "param1": "value", "param2": "value2" }'
 
-          # Body request passed through with an escaped json object string
+          # Body request passed through with a json object string
           # Apply only to POST|PUT request
           # Default: "{}"
           body: '{ "name": "breeze",  "job": "devops" }'
-
-          # Send raw body instead of JSON-parsed or YAML-parsed body
-          # Default: false
-          send-raw-body: false
 
           # Request timeout (milliseconds)
           # Default: 1000
@@ -98,7 +94,6 @@ jobs:
   // All header names are lower cased and can be accessed using the bracket notation.
   // Example: `response.headers['content-type']`
   "headers": {},
-
 }
 
 ```
@@ -130,7 +125,7 @@ jobs:
           url: https://reqres.in/api/users
           method: "POST"
           accept: 200
-          # You can send raw body instead of JSON-parsed or YAML-parsed body
+          # You can send raw body instead of JSON-formatted body
           body: '"string"'
           log-response: true
       - name: "Use response"
