@@ -11,13 +11,13 @@ inputs:
     default: "200,201,204"
   headers:
     description: 'Headers object'
-    default: "{}"'
+    default: "{}"
   params:
     description: 'Params object'
-    default: "{}"'
+    default: "{}"
   body:
     description: 'Body object with string literal'
-    default: "{}"'
+    default: "{}"
   timeout:
     description: 'Timeout (ms)'
     default: 1000
@@ -52,17 +52,17 @@ runs:
   using: docker
   image: Dockerfile
   args:
-  - '-url="${{ inputs.url }}"'
-  - '-method="${{ inputs.method }}"'
-  - '-accept="${{ inputs.accept }}"'
-  - '-headers="${{ inputs.headers }}"'
-  - '-params="${{ inputs.params }}"'
-  - '-body="${{ inputs.body }}"'
-  - '-timeout="${{ inputs.timeout }}"'
-  - '-basic-auth-token="${{ inputs.basic-auth-token }}"'
-  - '-bearer-token="${{ inputs.bearer-token }}"'
-  - '-proxy-url="${{ inputs.proxy-url }}"'
-  - '-proxy-auth-username="${{ inputs.proxy-auth-username }}"'
-  - '-proxy-auth-password="${{ inputs.proxy-auth-password }}"'
-  - '-log-response="${{ inputs.log-response }}"'
-  - '-retries="${{ inputs.retries }}"'
+  - "-url=${{ inputs.url }}"
+  - "-method=${{ inputs.method }}"
+  - "-accept=${{ inputs.accept }}"
+  - "-headers=${{ inputs.headers }}"
+  - "-params=${{ inputs.params }}"
+  - "-body=${{ inputs.body }}"
+  - "-timeout=${{ inputs.timeout }}"
+  - "-basic-auth-token=${{ inputs.basic-auth-token }}"
+  - "-bearer-token=${{ inputs.bearer-token }}"
+  - "-proxy-url=${{ inputs.proxy-url }}"
+  - "-proxy-auth-username=${{ inputs.proxy-auth-username }}"
+  - "-proxy-auth-password=${{ inputs.proxy-auth-password }}"
+  - "-log-response=${{ inputs.log-response }}"
+  - "-retries=${{ inputs.retries }}"
