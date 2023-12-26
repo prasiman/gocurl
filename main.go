@@ -107,7 +107,7 @@ func main() {
 
 	// Set response to output
 	msg := []byte("response=" + string(responseOutput) + "\r\n")
-	f, err := os.OpenFile("GITHUB_OUTPUT", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(os.Getenv("GITHUB_OUTPUT"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
 		log.Fatalf("Unable to write command to the environment file: %s", err)
