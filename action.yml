@@ -49,20 +49,15 @@ branding:
   icon: 'command'  
   color: 'gray-dark'
 runs:
-  using: docker
-  image: Dockerfile
-  args:
-  - "-url=${{ inputs.url }}"
-  - "-method=${{ inputs.method }}"
-  - "-accept=${{ inputs.accept }}"
-  - "-headers=${{ inputs.headers }}"
-  - "-params=${{ inputs.params }}"
-  - "-body=${{ inputs.body }}"
-  - "-timeout=${{ inputs.timeout }}"
-  - "-basic-auth-token=${{ inputs.basic-auth-token }}"
-  - "-bearer-token=${{ inputs.bearer-token }}"
-  - "-proxy-url=${{ inputs.proxy-url }}"
-  - "-proxy-auth-username=${{ inputs.proxy-auth-username }}"
-  - "-proxy-auth-password=${{ inputs.proxy-auth-password }}"
-  - "-log-response=${{ inputs.log-response }}"
-  - "-retries=${{ inputs.retries }}"
+  using: composite
+  steps:
+  - uses: actions/setup-go@v4
+    with:
+      go-version: '1.21'
+  - run: |
+      go run ./main.go \
+      -url="${{ inputs.url }}" -method="${{ inputs.method }}" -accept="${{ inputs.accept }}" \
+      -headers="${{ inputs.headers }}" -params="${{ inputs.params }}" -body="${{ inputs.body }}" \
+      -timeout="${{ inputs.timeout }}" -basic-auth-token="${{ inputs.basic-auth-token }}" -bearer-token="${{ inputs.bearer-token }}" \
+      -proxy-url="${{ inputs.proxy-url }}" -proxy-auth-username="${{ inputs.proxy-auth-username }}" -proxy-auth-password="${{ inputs.proxy-auth-password }}" \
+      -log-response="${{ inputs.log-response }}" -retries="${{ inputs.retries }}"
