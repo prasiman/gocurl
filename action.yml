@@ -54,7 +54,8 @@ runs:
   - uses: actions/setup-go@v4
     with:
       go-version: '1.21'
-  - run: |
+  - shell: bash
+    run: |
       go run ./main.go \
       -url="${{ inputs.url }}" -method="${{ inputs.method }}" -accept="${{ inputs.accept }}" \
       -headers="${{ inputs.headers }}" -params="${{ inputs.params }}" -body="${{ inputs.body }}" \
