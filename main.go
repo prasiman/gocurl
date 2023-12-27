@@ -110,7 +110,7 @@ func main() {
 	f, err := os.OpenFile(os.Getenv("GITHUB_OUTPUT"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
-		log.Fatalf("Unable to write command to the environment file: %s", err)
+		log.Fatalf("Unable to open environment file: %s", err)
 	}
 
 	defer func() {
